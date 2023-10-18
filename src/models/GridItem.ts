@@ -1,4 +1,5 @@
 export class GridItem {
   data: any
-  children: any
+  children?: Array<GridItem>
+  opened: Boolean = false
 }
