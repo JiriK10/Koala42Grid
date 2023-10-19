@@ -37,6 +37,12 @@ function toggle() {
     emit("update:opened", !props.opened)
   }
 }
+
+function collapseOnNoChildren() {
+  if (!hasChildrenRecords.value) {
+    emit("update:opened", false)
+  }
+}
 </script>
 
 <template>
@@ -48,7 +54,7 @@ function toggle() {
     <td class="w-28">
       <font-awesome-icon
         :icon="['fa-solid', opened ? 'fa-caret-down' : 'fa-caret-right']"
-        :class="[hasChildrenRecords ? '' : 'opacity-30']"
+        :class="{ 'opacity-30': hasChildrenRecords }"
       />
     </td>
     <td v-for="column in columns" class="px-4 py-2">
@@ -64,7 +70,7 @@ function toggle() {
   </tr>
   <tr v-if="opened" :class="[rowColor]">
     <td v-if="hasChildrenRecords" :colspan="columns.length + 2" class="pl-12">
-      <Grid :items="childrenRecords" />
+      <Grid :items="childrenRecords" @item-deleted="collapseOnNoChildren" />
     </td>
   </tr>
 </template>

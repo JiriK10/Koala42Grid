@@ -12,6 +12,6 @@ const props = defineProps<{
     <th v-for="key in Object.keys(item.data)" class="px-4 py-2">
       {{ key }}
     </th>
-    <th>Delete</th>
+    <th class="px-4 py-2">Delete</th>
   </tr>
 </template>

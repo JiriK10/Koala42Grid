@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useConfirm } from "primevue/useconfirm"
+import ConfirmDialog from "primevue/confirmdialog"
 import { useToast } from "primevue/usetoast"
 import Toast from "primevue/toast"
 import { GridItem } from "../models/GridItem"
@@ -9,7 +11,29 @@ const props = defineProps({
   items: Array<GridItem>,
 })
 
+const emit = defineEmits(["item-deleted"])
+
+const confirmDialog = useConfirm()
 const toast = useToast()
+
+function confirmDelete(item: GridItem) {
+  confirmDialog.require({
+    header: "Confirm delete",
+    message: "Do you want to delete this row with its children?",
+    acceptClass: "bg-primary text-gray-900 px-10",
+    rejectClass: "p-button-text text-primary px-10",
+    accept: () => {
+      confirmDialog.close()
+      deleteItem(item)
+    },
+    reject: () => {
+      confirmDialog.close()
+    },
+    onHide: () => {
+      confirmDialog.close()
+    },
+  })
+}
 
 function deleteItem(item: GridItem) {
   let itemIndex = props.items!.findIndex((i) => i == item)
@@ -25,10 +49,11 @@ function deleteItem(item: GridItem) {
       severity: "error",
       summary: "Deleted IDs",
       detail: deletedIDs.join(", "),
-      life: 5000,
+      life: 3000,
     })
 
     props.items!.splice(itemIndex, 1)
+    emit("item-deleted")
   }
 }
 </script>
@@ -41,9 +66,10 @@ function deleteItem(item: GridItem) {
         :item="item"
         :striped="index % 2 == 1"
         v-model:opened="item.opened"
-        @click-delete="deleteItem(item)"
+        @click-delete="confirmDelete(item)"
       />
     </template>
   </table>
+  <ConfirmDialog />
   <Toast position="bottom-center" />
 </template>

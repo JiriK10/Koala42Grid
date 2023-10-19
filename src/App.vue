@@ -20,9 +20,7 @@ while (query.length > 0) {
   }
 }
 
-const items = reactive(exampleData)
-// TODO resetovat opened při posledním delete
-// TODO potvrzení delete
+const items: any = reactive(exampleData)
 </script>
 
 <template>
