@@ -54,7 +54,7 @@ function collapseOnNoChildren() {
     <td class="w-28">
       <font-awesome-icon
         :icon="['fa-solid', opened ? 'fa-caret-down' : 'fa-caret-right']"
-        :class="{ 'opacity-30': hasChildrenRecords }"
+        :class="{ 'opacity-30': !hasChildrenRecords }"
       />
     </td>
     <td v-for="column in columns" class="px-4 py-2">
